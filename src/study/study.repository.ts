@@ -7,11 +7,9 @@ import { CreateStudyDto } from './dto/create-study.dto';
 
 @EntityRepository(Study)
 export class StudyRepository extends Repository<Study> {
-  async getAllStudys(user: User): Promise<Study[]> {
-    const query = this.createQueryBuilder('Study');
-    query.where('Study.userId = :userId', { userId: user.id });
-    const Studys = await query.getMany();
-    return Studys;
+  async getAllStudys(): Promise<Study[]> {
+    const studys = await this.find();
+    return studys;
   }
 
   async getStudyById(id: number): Promise<Study> {
@@ -32,7 +30,7 @@ export class StudyRepository extends Repository<Study> {
       hashtag,
       area,
       date,
-      users: '',
+      users: user.nickname,
       status: StudyStatus.PUBLIC,
       isDelete: false,
       user,

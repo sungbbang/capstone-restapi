@@ -1,8 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { StudyStatus } from './study-status.enum';
-import { v1 as uuid } from 'uuid';
-import { CreateStudyDto } from './dto/create-study.dto';
 import { StudyRepository } from './study.repository';
+import { CreateStudyDto } from './dto/create-study.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Study } from './study.entity';
 import { User } from 'src/auth/user.entity';
@@ -14,8 +13,8 @@ export class StudysService {
     private StudyRepository: StudyRepository,
   ) {}
 
-  getAllStudys(user: User): Promise<Study[]> {
-    return this.StudyRepository.getAllStudys(user);
+  getAllStudys(): Promise<Study[]> {
+    return this.StudyRepository.getAllStudys();
   }
 
   createStudy(createStudyDto: CreateStudyDto, user: User): Promise<Study> {
