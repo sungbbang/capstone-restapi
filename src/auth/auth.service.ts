@@ -22,11 +22,12 @@ export class AuthService {
   ): Promise<{ accessToken: string }> {
     const { username, password } = authCredentialsDto;
     const user = await this.userRepository.findOne({ username });
+    const nickname = user.nickname;
 
     if (user && (await bcrypt.compare(password, user.password))) {
       // create user token (secret + payload)
-      const payload = { username };
-      const accessToken = await this.jwtService.sign(payload);
+      const payload = { username, nickname };
+      const accessToken = this.jwtService.sign(payload);
       return { accessToken };
     } else {
       throw new UnauthorizedException('login failed');

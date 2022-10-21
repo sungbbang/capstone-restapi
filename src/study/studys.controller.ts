@@ -22,19 +22,19 @@ import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/auth/user.entity';
 
 @Controller('Studys')
-@UseGuards(AuthGuard())
 export class StudysController {
   private logger = new Logger('StudyController');
   constructor(private studysService: StudysService) {}
 
   @Get('/')
-  getAllStudy(@GetUser() user: User): Promise<Study[]> {
-    this.logger.verbose(`${user.username} trying to get all Studys`);
-    return this.studysService.getAllStudys(user);
+  getAllStudy(): Promise<Study[]> {
+    this.logger.verbose(`trying to get all Studys`);
+    return this.studysService.getAllStudys();
   }
 
   @Post('/')
   @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard())
   createStudy(
     @Body() createStudyDto: CreateStudyDto,
     @GetUser() user: User,
@@ -53,6 +53,7 @@ export class StudysController {
   }
 
   @Delete('/:id')
+  @UseGuards(AuthGuard())
   deleteStudy(
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,
@@ -61,6 +62,7 @@ export class StudysController {
   }
 
   @Patch('/:id/status')
+  @UseGuards(AuthGuard())
   updateStudyStatus(
     @Param('id', ParseIntPipe) id: number,
     @Body('status', StudyStatusValidationPipe) status: StudyStatus,
@@ -69,6 +71,7 @@ export class StudysController {
   }
 
   @Patch('/:id/users')
+  @UseGuards(AuthGuard())
   updateStudyUsers(
     @Param('id', ParseIntPipe) id: number,
     @Body('users') user: string,
