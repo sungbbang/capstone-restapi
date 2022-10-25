@@ -1,9 +1,11 @@
 import { User } from 'src/auth/user.entity';
+import { Qna } from 'src/qna/qna.entity';
 import {
   BaseEntity,
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { StudyStatus } from './study-status.enum';
@@ -42,4 +44,7 @@ export class Study extends BaseEntity {
 
   @ManyToOne((type) => User, (user) => user.study, { eager: false })
   user: User;
+
+  @OneToMany((type) => Qna, (qna) => qna.study, { eager: false })
+  qna: Qna;
 }
